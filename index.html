@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        /* box-sizing: border-box; */
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-evenly;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+          rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+      .navbar > h1:hover {
+        color: red;
+        font-size: 50px;
+      }
+      h1 {
+        color: black;
+        text-decoration: none;
+      }
+      body > h1 {
+        text-align: center;
+      }
+      form {
+        width: 400px;
+        /* border: 1px solid black; */
+        margin: auto;
+        margin-top: 30px;
+      }
+      input,
+      select {
+        display: block;
+        margin: 10px auto;
+        font-size: 15px;
+        padding: 2%;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="navbar">
+      <a href="./country.html">
+        <h1>Show Country Database</h1>
+      </a>
+    </div>
+    <h1>Fill this form for admission in Masai School</h1>
+    <form id="form">
+      <input placeholder="Enter City Name" type="text" id="city" />
+      <input placeholder="Enter Population" type="text" id="population" />
+      <select id="country">
+        <option value="india">India</option>
+        <option value="pakistan">Pakistan</option>
+        <option value="bangladesh">Bangladesh</option>
+      </select>
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
+
+<script>
+    let form = document.querySelector("#form").addEventListener("submit", myFunction);
+  
+async function myFunction(event) {
+  event.preventDefault();
+
+        try{
+            
+            let data = {
+                country: document.getElementById('country').value,
+                city: document.getElementById('city').value,
+                population: document.getElementById('population').value,
+            }
+            console.log("nk")
+
+            data = JSON.stringify(data);
+
+            let response = await fetch("http://localhost:3000/country",{
+            method: "POST",
+            body: data,
+            headers: {
+                "Content-Type": 'application/json',
+            }
+        });
+
+        let d = await response.json();
+        console.log("Data:", d);
+        }
+        catch(e) {
+            console.log("error:", e);
+        }
+    }
+</script>

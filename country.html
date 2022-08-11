@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Details</title>
+</head>
+<body>
+
+    <div>
+            <select id="sorting" >
+                <option value="">--------</option>
+                <option value="asc">Ascending</option>
+                <option value="dsc">Descending</option>
+            </select>
+    </div>
+    <table border="1">
+        <thead>
+            <th>Id</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Population</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+        </tbody>
+
+    </table>
+    
+</body>
+</html>
+
+<script>
+    
+async function getData(){
+
+try{
+    // let g_id = document.getElementById('get_prod').value;
+
+    let response = await fetch(`http://127.0.0.1:3000/country`,{
+
+        method: "GET",
+
+        headers: {
+            "Content-Type": 'application/json',
+        }
+    });
+
+    let get_data = await response.json();
+    console.log('get_data:', get_data);
+    displayTable(get_data);
+    document.getElementById('sorting').addEventListener('change', mySorting(get_data));
+    
+}
+catch(e){
+    console.log('e:', e)
+}
+}
+
+
+getData();
+
+
+
+
+
+ function displayTable(data) {
+  document.querySelector("tbody").innerHTML = "";
+  data.map((el, index) => {
+    let tr = document.createElement("tr");
+    let td1 = document.createElement("td");
+    td1.innerText = el.id;
+    let td2 = document.createElement("td");
+    td2.innerText = el.country;
+
+    let td3 = document.createElement("td");
+    td3.innerText = el.city;
+
+    let td4 = document.createElement("td");
+    td4.innerText = el.population;
+
+    let td5 = document.createElement("td");
+    td5.innerText = "edit";
+
+    let td6 = document.createElement("td");
+    td6.innerText = "delete";
+    td6.setAttribute("id", "delete_id")
+    td6.addEventListener("click", function () {
+        remove(el,index);
+    });
+
+    tr.append(td1, td2, td3, td4, td5, td6);
+    document.querySelector("tbody").append(tr);
+  });
+
+  function remove(el,index) {
+    let d = data.splice(index, 1);
+    let id = el.id;
+    console.log(id);
+    deleteCountry(id);
+}
+}
+
+
+
+
+function mySorting(data) {
+    // data = data.sort((a,b) =>  )
+    let val = document.getElementById('sorting').value;
+
+    console.log(val);
+    if(val == ''){
+        displayTable(data);
+    }
+    else if(val == 'asc'){
+        data.sort((a,b) => {
+            a.population > b.population
+            return -1;
+        });
+        console.log(data);
+        displayTable(data);
+    }
+    else{
+        data.sort((a,b) =>{
+
+        b.population > a.population;
+        return 1;
+    });
+        console.log(data);
+        displayTable(data);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+async function deleteCountry(id){
+        
+        try{
+
+        let response = await fetch(`http://127.0.0.1:3000/country/${id}`,{
+
+        method: "DELETE",
+
+        headers: {
+
+        "Content-Type": 'application/json',
+
+        }
+
+    });
+
+    let d = await response.json();
+        console.log('d:', d);
+        
+        displayTable(d);
+    }
+
+    
+    catch(error){
+        console.log('error:', error);
+    }
+}
+
+
+
+</script>

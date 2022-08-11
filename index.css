@@ -1,0 +1,10 @@
+#contry{
+    height: 23px;
+}
+
+#formDiv{
+    border: 1px solid red;
+    width: 550px;
+    margin: auto;
+    text-align: center;
+}

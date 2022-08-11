@@ -1,0 +1,28 @@
+{
+  "country": [
+    {
+      "country": "india",
+      "city": "jalgaon",
+      "population": "454455",
+      "id": 4
+    },
+    {
+      "country": "pakistan",
+      "city": "lahore",
+      "population": "4545",
+      "id": 5
+    },
+    {
+      "country": "india",
+      "city": "pune",
+      "population": "5000",
+      "id": 6
+    },
+    {
+      "country": "india",
+      "city": "bang",
+      "population": "7000",
+      "id": 7
+    }
+  ]
+}
